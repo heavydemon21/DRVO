@@ -34,12 +34,14 @@ static ssize_t
 hello_read(struct file *file, char __user * buf, size_t lbuf, loff_t * ppos)
 {
 	printk(KERN_ALERT "hello_read()\n");
+    printk(KERN_ALERT "read %zu bytes\n",lbuf);
 	return 0;
 }
 static ssize_t
 hello_write(struct file *file, const char __user * buf, size_t lbuf, loff_t * ppos)
 {
 	printk(KERN_ALERT "hello_write())\n");
+    printk(KERN_ALERT "write %zu bytes\n", lbuf);
 	return lbuf;
 }
 
@@ -61,16 +63,16 @@ static int hello_init(void)
 		return -ENOMEM;
 	}
 	cdev_init(device, &fops);
-	result = register_chrdev_region(device_number, amount, driver_name);     
-	if (result < 0) {         
-		printk(KERN_ALERT "Failed to register device region: %d\n", result);         
-		return result;     
+	result = register_chrdev_region(device_number, amount, driver_name);
+	if (result < 0) {
+		printk(KERN_ALERT "Failed to register device region: %d\n", result);
+		return result;
 	}
 
     	result = cdev_add(device, device_number, amount);
     	if (result < 0) {
         	printk(KERN_ALERT "Failed to add cdev: %d\n", result);
-        	unregister_chrdev_region(device_number, amount); 
+        	unregister_chrdev_region(device_number, amount);
 		return result;
     	}
 
