@@ -1,9 +1,5 @@
 = DRVO
-:imagesdir: .
-:pdf-themesdir: .
-:pdf-stylesdir: .
-:pdf-fontsdir: .
-
+:sourcedir: ../
 //:bibliography-database: ref.bib
 //:bibliography-style: apa
 
@@ -21,9 +17,10 @@ Dit zijn de stappen en het resultaaat die ik heb gevold voor het vak driver ontw
 === H2.2
 
 dit is mijn .c file die ik gebruikt hebt
+
 [source, c]
 ----
-#include::src/hello.c[]
+include::src/hello.c[]
 ----
 
 === H2.3
