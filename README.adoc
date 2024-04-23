@@ -1,6 +1,18 @@
 = DRVO
+:imagesdir: .
+:pdf-themesdir: .
+:pdf-stylesdir: .
+:pdf-fontsdir: .
 
-//:source-highlighter: rouge
+//:bibliography-database: ref.bib
+//:bibliography-style: apa
+
+:doctype: book
+:organization: Avans University
+:Author: Niels Stunnebrink
+:email: n.stunnebrink@student.avans.nl
+:xrefstyle: short
+:source-highlighter: rouge
 
 Dit zijn de stappen en het resultaaat die ik heb gevold voor het vak driver ontwikkeling
 
