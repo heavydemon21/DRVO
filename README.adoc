@@ -1,4 +1,7 @@
 = DRVO
+
+//:source-highlighter: rouge
+
 Dit zijn de stappen en het resultaaat die ik heb gevold voor het vak driver ontwikkeling
 
 == H2 Character device driver
@@ -6,22 +9,22 @@ Dit zijn de stappen en het resultaaat die ik heb gevold voor het vak driver ontw
 === H2.2
 
 dit is mijn .c file die ik gebruikt hebt
-[,.c]
+[source, c]
 ----
-include::src/hello.c[]
+#include::src/hello.c[]
 ----
 
 === H2.3
 
 waneer ik dit commando run met de meegegeven Makefile dan krijg ik het resultaat.
-[.terminal]
+[source,shell]
 ----
 make hello.ko obj-m=hello.o -C /lib/modules/4.15.0-54-generic/build M=/home/joan/drvo/
 modules
 ----
 
 resultaat:
-[.terminal]
+[source,shell]
 ----
 niels@niels-virtual-machine:~/github/DRVO/src$ make
 make -C /lib/modules/6.5.0-28-generic/build M=/home/niels/github/DRVO/src modules
@@ -43,8 +46,8 @@ ik krijg wat warnings maar kan het bouwen en testen.
 
 === H2.4
 
-Als eerste heb ik in een andere terminal de commando:
-[.terminal]
+Als eerste heb ik in een anderesource,shell de commando:
+[source,shell]
 ----
 sudo dmesg -w
 ----
@@ -52,25 +55,25 @@ Om ervoor te zorgen dat ik printk kan meekijken.
 
 
 Dan doe ik het commando:
-[.terminal]
+[source,shell]
 ----
 sudo insmod hello.ko
 ----
 
 En krijg ik het resultaat in de log te zien:
-[.terminal]
+[source,shell]
 ----
 [ 5280.572849] Hello, world
 ----
 
 En wanneer ik het commando:
-[.terminal]
+[source,shell]
 ----
 sudo rmmod hello
 ----
 
 krijg het resultaat te zien in de log:
-[.terminal]
+[source,shell]
 ----
 [ 5362.805165] Goodbye, world
 ----
@@ -82,24 +85,24 @@ krijg het resultaat te zien in de log:
 .dit is mijn opgave 3.1.c file:
 
 .source code:
-[.c]
+[source, c]
 ----
-include::src/opgave_3_1.c[]
+#include::src/opgave_3_1.c[]
 ----
 
 .Commando om te bouwen:
-[.terminal]
+[source,shell]
 ----
 make
 ----
 .Kernel resultaat bij registeren en de-registreren:
-[.terminal]
+[source,shell]
 ----
 [ 6537.263969] Hello, world
 [ 6539.340526] Goodbye, world
 ----
 .Dat de module in /proc/modules staat als de module geregistreerd is:
-[.terminal]
+[source,shell]
 ----
 niels@niels-virtual-machine:~/github/DRVO$ cat /proc/modules
 hello 12288 0 - Live 0x0000000000000000 (OE)
@@ -114,7 +117,7 @@ intel_rapl_common 40960 1 intel_rapl_msr, Live 0x0000000000000000
 vmw_balloon 28672 0 - Live 0x0000000000000000
 ----
 .Dat de module staat in lsmod als de module geregistreerd is:
-[.terminal]
+[source,shell]
 ----
 niels@niels-virtual-machine:~/github/DRVO/src$ sudo lsmod
 Module                  Size  Used by
@@ -123,19 +126,80 @@ tls                   151552  0
 isofs                  61440  2
 ----
 
+<<<
+
 === H3.2
-[.Makefile]
+[source,Makefile]
 ----
 include::src/Makefile[]
 ----
 
 === H3.3
-[.terminal]
+[source,shell]
 ----
 include::src/build_log_opgave3_3.txt[]
 ----
 
-=== H4.3
+<<<
+
+=== H3.4 en H3.5
+
+[source, c]
+----
+include::src/opgave_3_3.c[]
+----
+
+[source, shell]
+----
+sudo mknod /dev/hello_driver c 500 0 -m 0666
+----
+
+
+[source,shell]
+----
+brw-rw----  1 root  disk      2,   0 apr 23 17:06 fd0
+crw-rw-rw-  1 root  root      1,   7 apr 23 17:06 full
+crw-rw-rw-  1 root  root     10, 229 apr 23 17:06 fuse
+**crw-rw-rw-  1 root  root    500,   0 apr 23 19:11 hello_driver**
+crw-------  1 root  root    241,   0 apr 23 17:06 hidraw0
+crw-------  1 root  root     10, 228 apr 23 17:06 hpet
+drwxr-xr-x  2 root  root           0 apr 23 17:00 hugepages
+----
+
+=== H3.6
+
+[source,shell]
+----
+[ 8866.705029] hello_init()
+[ 8882.562743] hello_open()
+[ 8882.562758] hello_read()
+[ 8882.562769] hello_release()
+[ 8899.352146] hello_open()
+[ 8899.352159] hello_write())
+[ 8899.352189] hello_release()
+[ 8913.101600] hello_open()
+[ 8913.101614] hello_read()
+[ 8913.101625] hello_release()
+[ 8921.882774] hello_exit()
+
+----
+
+=== H3.7
+
+[source,shell]
+----
+[ 9345.234611] hello_init()
+[ 9364.965568] hello_open()
+[ 9364.965585] hello_write())
+[ 9364.965587] write 5 bytes
+[ 9364.965621] hello_release()
+[ 9372.127842] hello_open()
+[ 9372.127857] hello_read()
+[ 9372.127858] read 131072 bytes
+[ 9372.127870] hello_release()
+[ 9381.073245] hello_exit()
+----
+=== H3.8
 
 
 
