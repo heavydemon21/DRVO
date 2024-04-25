@@ -1,5 +1,5 @@
 
-inputFile=opgave_3_3
+inputFile=opgave_3_8
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 

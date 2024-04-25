@@ -1,18 +1,22 @@
-= DRVO
-:sourcedir: ../
-//:bibliography-database: ref.bib
-//:bibliography-style: apa
 
 :doctype: book
+:xrefstyle: short
+:source-highlighter: pygments
 :organization: Avans University
 :Author: Niels Stunnebrink
 :email: n.stunnebrink@student.avans.nl
-:xrefstyle: short
-:source-highlighter: rouge
+:toc:
 
-Dit zijn de stappen en het resultaaat die ik heb gevold voor het vak driver ontwikkeling
+= DRVO
+
+<<<
 
 == H2 Character device driver
+
+[source,ruby]
+----
+puts "Hello, World!
+----
 
 === H2.2
 
@@ -26,14 +30,14 @@ include::src/hello.c[]
 === H2.3
 
 waneer ik dit commando run met de meegegeven Makefile dan krijg ik het resultaat.
-[source,shell]
+[source,console]
 ----
 make hello.ko obj-m=hello.o -C /lib/modules/4.15.0-54-generic/build M=/home/joan/drvo/
 modules
 ----
 
 resultaat:
-[source,shell]
+[source,console]
 ----
 niels@niels-virtual-machine:~/github/DRVO/src$ make
 make -C /lib/modules/6.5.0-28-generic/build M=/home/niels/github/DRVO/src modules
@@ -55,8 +59,8 @@ ik krijg wat warnings maar kan het bouwen en testen.
 
 === H2.4
 
-Als eerste heb ik in een anderesource,shell de commando:
-[source,shell]
+Als eerste heb ik in een anderesource,console de commando:
+[source,console]
 ----
 sudo dmesg -w
 ----
@@ -64,25 +68,25 @@ Om ervoor te zorgen dat ik printk kan meekijken.
 
 
 Dan doe ik het commando:
-[source,shell]
+[source,console]
 ----
 sudo insmod hello.ko
 ----
 
 En krijg ik het resultaat in de log te zien:
-[source,shell]
+[source,console]
 ----
 [ 5280.572849] Hello, world
 ----
 
 En wanneer ik het commando:
-[source,shell]
+[source,console]
 ----
 sudo rmmod hello
 ----
 
 krijg het resultaat te zien in de log:
-[source,shell]
+[source,console]
 ----
 [ 5362.805165] Goodbye, world
 ----
@@ -96,22 +100,22 @@ krijg het resultaat te zien in de log:
 .source code:
 [source, c]
 ----
-#include::src/opgave_3_1.c[]
+include::src/opgave_3_1.c[]
 ----
 
 .Commando om te bouwen:
-[source,shell]
+[source,console]
 ----
 make
 ----
 .Kernel resultaat bij registeren en de-registreren:
-[source,shell]
+[source,console]
 ----
 [ 6537.263969] Hello, world
 [ 6539.340526] Goodbye, world
 ----
 .Dat de module in /proc/modules staat als de module geregistreerd is:
-[source,shell]
+[source,console]
 ----
 niels@niels-virtual-machine:~/github/DRVO$ cat /proc/modules
 hello 12288 0 - Live 0x0000000000000000 (OE)
@@ -126,7 +130,7 @@ intel_rapl_common 40960 1 intel_rapl_msr, Live 0x0000000000000000
 vmw_balloon 28672 0 - Live 0x0000000000000000
 ----
 .Dat de module staat in lsmod als de module geregistreerd is:
-[source,shell]
+[source,console]
 ----
 niels@niels-virtual-machine:~/github/DRVO/src$ sudo lsmod
 Module                  Size  Used by
@@ -138,13 +142,13 @@ isofs                  61440  2
 <<<
 
 === H3.2
-[source,Makefile]
+[source,make]
 ----
 include::src/Makefile[]
 ----
 
 === H3.3
-[source,shell]
+[source,console]
 ----
 include::src/build_log_opgave3_3.txt[]
 ----
@@ -158,13 +162,13 @@ include::src/build_log_opgave3_3.txt[]
 include::src/opgave_3_3.c[]
 ----
 
-[source, shell]
+[source, console]
 ----
 sudo mknod /dev/hello_driver c 500 0 -m 0666
 ----
 
 
-[source,shell]
+[source,console]
 ----
 brw-rw----  1 root  disk      2,   0 apr 23 17:06 fd0
 crw-rw-rw-  1 root  root      1,   7 apr 23 17:06 full
@@ -177,7 +181,7 @@ drwxr-xr-x  2 root  root           0 apr 23 17:00 hugepages
 
 === H3.6
 
-[source,shell]
+[source,console]
 ----
 [ 8866.705029] hello_init()
 [ 8882.562743] hello_open()
@@ -195,7 +199,7 @@ drwxr-xr-x  2 root  root           0 apr 23 17:00 hugepages
 
 === H3.7
 
-[source,shell]
+[source,console]
 ----
 [ 9345.234611] hello_init()
 [ 9364.965568] hello_open()
@@ -211,4 +215,27 @@ drwxr-xr-x  2 root  root           0 apr 23 17:00 hugepages
 === H3.8
 
 
+.input
+[source, console]
+----
+sudo insmod opgave_3_8.ko param1=10 param2=20
+----
+
+
+.output
+[source,console]
+----
+[ 1783.083052] hello_init()
+[ 1783.083056] Param1: 10, Param2: 20
+[ 1868.848986] hello_open()
+[ 1868.849000] hello_read()
+[ 1868.849001] read 131072 bytes
+[ 1868.849014] hello_release()
+[ 1885.426878] hello_open()
+[ 1885.426891] hello_write())
+[ 1885.426893] write 2 bytes
+[ 1885.426922] hello_release()
+[ 1916.025510] hello_exit()
+
+----
 
